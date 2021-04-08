@@ -1,11 +1,11 @@
-package main
+package redis
 
 import (
 	"errors"
 	"fmt"
 )
 
-func main() {
+func InitRedis() {
 	var keysAndValuesMap = make(map[string]string)
 	var command string
 	var key string
