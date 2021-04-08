@@ -1,19 +1,20 @@
 package main
 
-import "fmt"
-
-// initially, the REPL will have only three commands: GET, SET and DELETE
-
-// work with bytes maybe?
-var keysAndValuesMap = make(map[string]string)
-var command string
-var key string
-var value string
+import (
+	"errors"
+	"fmt"
+)
 
 func main() {
+	var keysAndValuesMap = make(map[string]string)
+	var command string
+	var key string
+	var value string
+	var stopExecution bool
+	var err error
+	var result string
 
-	// TODO: use function pointers so I do not have to have a switch case statement in the middle of the function
-	for {
+	for !stopExecution {
 		key = ""
 		value = ""
 		fmt.Scanln(&command)
@@ -21,26 +22,59 @@ func main() {
 		switch command {
 		case "GET":
 			fmt.Scanln(&key)
-			GetValue(&key)
+			value, err = GetValue(&keysAndValuesMap, &key)
+			HandlePrintlnOfCommandResult(&value, err)
 		case "SET":
 			fmt.Scanln(&key)
 			fmt.Scanln(&value)
-			SetValue(key, value)
+			result = SetValue(&keysAndValuesMap, &key, &value)
+			HandlePrintlnOfCommandResult(&result, nil)
+		case "DELETE":
+			fmt.Scanln(&key)
+			result, err = DeleteValue(&keysAndValuesMap, &key)
+			HandlePrintlnOfCommandResult(&result, err)
+		case "GETALL":
+			result = GetAll(&keysAndValuesMap)
+			HandlePrintlnOfCommandResult(&result, nil)
+		case "QUIT":
+			stopExecution = true
+		default:
+			fmt.Println("invalid command")
 		}
 	}
 }
 
-func GetValue(key *string) string {
-	for currentKey, currentValue := range keysAndValuesMap {
+func GetValue(keysAndValuesMap *map[string]string, key *string) (string, error) {
+	for currentKey, currentValue := range *keysAndValuesMap {
 		if *key == currentKey {
-			return currentValue
+			return currentValue, nil
 		}
 	}
 
-	return ""
+	return "", errors.New("nok")
 }
 
-// TODO: Test pass by reference
-func SetValue(key string, value string) {
-	keysAndValuesMap[key] = value
+func SetValue(keysAndValuesMap *map[string]string, key *string, value *string) string {
+	(*keysAndValuesMap)[*key] = *value
+
+	return "ok"
+}
+
+func DeleteValue(keysAndValuesMap *map[string]string, key *string) (string, error) {
+	for currentKey := range *keysAndValuesMap {
+		if *key == currentKey {
+			delete(*keysAndValuesMap, *key)
+			return "ok", nil
+		}
+	}
+
+	return "", errors.New("nok")
+}
+
+func GetAll(keysAndValuesMap *map[string]string) string {
+	for currentKey, currentValue := range *keysAndValuesMap {
+		fmt.Printf("[%v]: %v\n", currentKey, currentValue)
+	}
+
+	return "ok"
 }
