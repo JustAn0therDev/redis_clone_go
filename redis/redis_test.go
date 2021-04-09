@@ -55,3 +55,14 @@ func TestExistsShouldReturnOK(t *testing.T) {
 		t.Error("expected Exists to return correctly, got nok")
 	}
 }
+
+func TestExistsShouldReturnNOK(t *testing.T) {
+	testString := ""
+	testMap := make(map[string]string)
+
+	result := Exists(&testMap, &testString)
+
+	if result != "nok" {
+		t.Error("expected Exists to return nok, got ok")
+	}
+}
