@@ -37,6 +37,7 @@ func InitRedis() {
 			result = GetAll(&keysAndValuesMap)
 			HandlePrintlnOfCommandResult(&result, nil)
 		case "EXISTS":
+			fmt.Scanln(&key)
 			result = Exists(&keysAndValuesMap, &key)
 			HandlePrintlnOfCommandResult(&result, nil)
 		case "QUIT":
