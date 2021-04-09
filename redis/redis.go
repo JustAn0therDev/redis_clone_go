@@ -36,6 +36,9 @@ func InitRedis() {
 		case "GETALL":
 			result = GetAll(&keysAndValuesMap)
 			HandlePrintlnOfCommandResult(&result, nil)
+		case "EXISTS":
+			result = Exists(&keysAndValuesMap, &key)
+			HandlePrintlnOfCommandResult(&result, nil)
 		case "QUIT":
 			stopExecution = true
 		default:
@@ -55,7 +58,13 @@ func GetValue(keysAndValuesMap *map[string]string, key *string) (string, error) 
 }
 
 func SetValue(keysAndValuesMap *map[string]string, key *string, value *string) string {
+	lastLength := len(*keysAndValuesMap)
 	(*keysAndValuesMap)[*key] = *value
+
+	// assert the length is different after insertion
+	if len(*keysAndValuesMap) == lastLength {
+		panic("key value pair could not added to map")
+	}
 
 	return "ok"
 }
@@ -77,4 +86,14 @@ func GetAll(keysAndValuesMap *map[string]string) string {
 	}
 
 	return "ok"
+}
+
+func Exists(keysAndValuesMap *map[string]string, key *string) string {
+	for currentKey := range *keysAndValuesMap {
+		if *key == currentKey {
+			return "ok"
+		}
+	}
+
+	return "nok"
 }
