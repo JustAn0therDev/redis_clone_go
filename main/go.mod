@@ -1,4 +1,4 @@
-module github.com/JustAn0therDev/redis_clone_c/main
+module github.com/JustAn0therDev/redis_clone_go/main
 
 go 1.16
 
