@@ -40,6 +40,9 @@ func InitRedis() {
 			fmt.Scanln(&key)
 			result = Exists(&keysAndValuesMap, &key)
 			HandlePrintlnOfCommandResult(&result, nil)
+		case "FLUSH":
+			result = Flush(&keysAndValuesMap)
+			HandlePrintlnOfCommandResult(&result, nil)
 		case "QUIT":
 			stopExecution = true
 		default:
@@ -97,4 +100,15 @@ func Exists(keysAndValuesMap *map[string]string, key *string) string {
 	}
 
 	return "nok"
+}
+
+func Flush(keysAndValuesMap *map[string]string) string {
+	originalLength := len(*keysAndValuesMap)
+	*keysAndValuesMap = make(map[string]string)
+
+	if originalLength == len(*keysAndValuesMap) {
+		panic("the keys and values map could not be cleared")
+	}
+
+	return "ok"
 }

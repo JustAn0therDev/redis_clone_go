@@ -66,3 +66,16 @@ func TestExistsShouldReturnNOK(t *testing.T) {
 		t.Error("expected Exists to return nok, got ok")
 	}
 }
+
+func TestFlushCommandShouldNotPanic(t *testing.T) {
+	testString := "key"
+	testValue := "val"
+	testMap := map[string]string{testString: testValue}
+	originalLength := len(testMap)
+
+	Flush(&testMap)
+
+	if len(testmap) == originalLength {
+		t.Error("expected the length of the map to be different after flush")
+	}
+}
