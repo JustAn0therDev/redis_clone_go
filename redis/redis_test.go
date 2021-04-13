@@ -75,7 +75,7 @@ func TestFlushCommandShouldNotPanic(t *testing.T) {
 
 	Flush(&testMap)
 
-	if len(testmap) == originalLength {
+	if len(testMap) == originalLength {
 		t.Error("expected the length of the map to be different after flush")
 	}
 }
