@@ -17,6 +17,7 @@ func InitRedis() {
 		fmt.Scanln(&command)
 
 		switch command {
+
 		case "GET":
 			fmt.Scanln(&key)
 			value, err = GetValue(&keysAndValuesMap, &key)
@@ -44,6 +45,7 @@ func InitRedis() {
 			stopExecution = true
 		default:
 			fmt.Println("invalid command")
+
 		}
 	}
 }
