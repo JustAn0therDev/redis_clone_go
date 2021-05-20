@@ -6,7 +6,7 @@ func SetValue(keysAndValuesMap *map[string]string, key *string, value *string) s
 
 	// assert the length is different after insertion
 	if len(*keysAndValuesMap) == lastLength {
-		panic("key value pair could not added to map")
+		panic("key value pair could not be added to map")
 	}
 
 	return "ok"
